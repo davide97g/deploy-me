@@ -1,0 +1,10 @@
+{
+  "name": "@caffe-del-deploy/theme",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./fonts.css": "./fonts.css",
+    "./coffee-cup.svg": "./coffee-cup.svg"
+  }
+}

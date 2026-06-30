@@ -1,0 +1,23 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Caffè del Deploy — dal caos al commit, un caffè alla volta." } = Astro.props;
+---
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/coffee-cup.svg" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "@caffe-del-deploy/landing",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "echo 'landing: typecheck via build'",
+    "lint": "echo 'no lint configured'"
+  },
+  "dependencies": {
+    "@caffe-del-deploy/theme": "workspace:*",
+    "astro": "^5.9.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

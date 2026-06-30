@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        continue-on-error: true
+        id: install
+
+      - name: Install dependencies (no lockfile)
+        if: steps.install.outcome == 'failure'
+        run: pnpm install
+
+      - name: Lint, typecheck, build
+        run: pnpm turbo lint typecheck build
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Engine smoke test
+        working-directory: apps/engine
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt
+          .venv/bin/python -c "from main import app; assert 'Macinino' in app.title"

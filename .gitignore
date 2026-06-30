@@ -1,0 +1,13 @@
+node_modules
+dist
+.astro
+.turbo
+.env
+.env.local
+.env.*.local
+__pycache__
+*.pyc
+.venv
+venv
+.DS_Store
+*.log

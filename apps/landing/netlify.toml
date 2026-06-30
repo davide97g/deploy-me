@@ -1,0 +1,7 @@
+[build]
+  base = "apps/landing"
+  command = "cd ../.. && pnpm install && pnpm --filter @caffe-del-deploy/landing build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

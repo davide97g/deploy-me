@@ -1,0 +1,23 @@
+{
+  "name": "caffe-del-deploy",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:engine": "cd apps/engine && (test -d .venv || python3 -m venv .venv) && .venv/bin/pip install -q -r requirements.txt && .venv/bin/uvicorn main:app --reload --port 8000",
+    "dev:stop": "bash scripts/kill-ports.sh",
+    "predev:all": "bash scripts/kill-ports.sh",
+    "dev:all": "concurrently -k -n landing,web,stats,api,engine -c blue,green,cyan,yellow,magenta \"pnpm --filter @caffe-del-deploy/landing dev\" \"pnpm --filter @caffe-del-deploy/web dev\" \"pnpm --filter @caffe-del-deploy/stats dev\" \"pnpm --filter @caffe-del-deploy/api dev\" \"pnpm dev:engine\"",
+    "bootstrap": "pnpm install && cd apps/engine && (test -d .venv || python3 -m venv .venv) && .venv/bin/pip install -r requirements.txt",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
+  }
+}

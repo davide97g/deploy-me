@@ -1,0 +1,348 @@
+---
+import Base from "../layouts/Base.astro";
+import { articoli } from "../data/articoli.ts";
+
+const webUrl = import.meta.env.PUBLIC_WEB_URL ?? "http://localhost:5173";
+
+const servizi = [
+  { nome: "README Polish", desc: "Brain dump → intro da repository", prezzo: "1 espresso" },
+  { nome: "LinkedIn Post", desc: "Dal vibe coding al post che fa colpo", prezzo: "1 cappuccino" },
+  { nome: "Commit Message", desc: "Note caotiche → messaggio chiaro", prezzo: "1 ristretto" },
+];
+
+const [inEvidenza, ...altri] = articoli;
+
+const fmtData = (iso: string) =>
+  new Intl.DateTimeFormat("it-IT", { day: "numeric", month: "long" }).format(new Date(iso));
+---
+
+<Base title="Caffè del Deploy">
+  <div class="insegna">
+    <span class="insegna__nome">Caffè del Deploy</span>
+    <span class="insegna__stato"><i></i> Aperto · il deploy non dorme mai</span>
+  </div>
+
+  <div class="vetrina">
+    <div class="deploy-badge" title="Sito statico distribuito dalla CDN di Netlify">
+      <span class="deploy-badge__dot"></span>
+      <div>
+        <strong>Netlify · cdn</strong>
+        <span class="deploy-badge__sub">Astro · sito statico</span>
+      </div>
+    </div>
+
+    <header class="hero">
+      <div class="hero__steam" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <img src="/coffee-cup.svg" alt="" width="56" height="56" class="hero__icon" />
+      <p class="eyebrow">Caffetteria per sviluppatori · dal 2024</p>
+      <h1 class="hero__title">Dal caos<br />al commit.</h1>
+      <p class="hero__tagline">Un caffè alla volta.</p>
+      <p class="hero__sub">
+        Ordina al bancone. Il barista AI macina le tue note caotiche in copy pulita,
+        pronta per README, LinkedIn o il prossimo deploy.
+      </p>
+      <div class="hero__actions">
+        <a href={webUrl} class="btn btn--primary">Entra nel bar</a>
+        <a href="#taccuino" class="btn btn--ghost">Leggi il taccuino</a>
+      </div>
+    </header>
+
+    <section class="carta" aria-labelledby="carta-title">
+      <div class="carta__head">
+        <h2 id="carta-title" class="carta__title">La carta</h2>
+        <span class="carta__note">si paga in caffè</span>
+      </div>
+      <ul class="carta__list">
+        {servizi.map((s) => (
+          <li class="carta__row">
+            <span class="carta__nome">{s.nome}</span>
+            <span class="carta__lead" aria-hidden="true"></span>
+            <span class="carta__price">{s.prezzo}</span>
+            <span class="carta__desc">{s.desc}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="taccuino" id="taccuino" aria-labelledby="taccuino-title">
+      <div class="sec-head">
+        <p class="eyebrow eyebrow--terra">Dal taccuino del barista</p>
+        <h2 id="taccuino-title" class="sec-title">Lettura al banco</h2>
+      </div>
+
+      <a class="post post--feature" href={`/blog/${inEvidenza.slug}`}>
+        <div class="post__meta">
+          <span class="tag">{inEvidenza.categoria}</span>
+          <span class="post__time">{fmtData(inEvidenza.data)} · {inEvidenza.lettura} min</span>
+        </div>
+        <h3 class="post__title">{inEvidenza.titolo}</h3>
+        <p class="post__dek">{inEvidenza.dek}</p>
+        <span class="post__more">Leggi l'articolo →</span>
+      </a>
+
+      <div class="post-grid">
+        {altri.map((a) => (
+          <a class="post" href={`/blog/${a.slug}`}>
+            <div class="post__meta">
+              <span class="tag">{a.categoria}</span>
+              <span class="post__time">{a.lettura} min</span>
+            </div>
+            <h3 class="post__title post__title--sm">{a.titolo}</h3>
+            <p class="post__dek">{a.dek}</p>
+            <span class="post__more">Leggi →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="arch" aria-labelledby="arch-title">
+      <div class="sec-head">
+        <p class="eyebrow eyebrow--terra">Dietro il bancone</p>
+        <h2 id="arch-title" class="sec-title">Quattro banchi, un bar</h2>
+      </div>
+      <div class="arch__grid">
+        <div class="arch__cell"><span>Vetrina</span><small>Netlify</small></div>
+        <div class="arch__cell"><span>Bancone</span><small>Vercel</small></div>
+        <div class="arch__cell"><span>Cucina</span><small>Render</small></div>
+        <div class="arch__cell"><span>Macinino</span><small>Fly.io</small></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Aperto 24/7 — il deploy non dorme mai.</p>
+      <p class="footer__sub">Dal caos al commit. Un caffè alla volta.</p>
+    </footer>
+  </div>
+</Base>
+
+<style>
+  .insegna {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 1.5rem;
+    background: var(--espresso);
+    color: var(--crema);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+  .insegna__nome { text-transform: uppercase; letter-spacing: 0.18em; }
+  .insegna__stato { display: inline-flex; align-items: center; gap: 0.45rem; opacity: 0.85; }
+  .insegna__stato i {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--oro);
+    box-shadow: 0 0 0 0 rgba(217, 154, 78, 0.7);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(217, 154, 78, 0.6); }
+    70% { box-shadow: 0 0 0 7px rgba(217, 154, 78, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(217, 154, 78, 0); }
+  }
+
+  .vetrina { max-width: 860px; margin: 0 auto; padding: 1rem 1.5rem 3rem; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+    opacity: 0.7;
+    margin: 0;
+  }
+  .eyebrow--terra { color: var(--terracotta); opacity: 1; }
+
+  /* ── Hero ───────────────────────────────────────── */
+  .hero {
+    text-align: center;
+    padding: 2.5rem 0 3.5rem;
+    position: relative;
+    background:
+      radial-gradient(60% 60% at 50% 12%, rgba(217, 154, 78, 0.16), transparent 70%),
+      radial-gradient(80% 50% at 50% 0%, var(--crema-scura), transparent 75%);
+  }
+  .hero__steam { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+  .hero__steam span {
+    width: 6px; height: 24px;
+    background: linear-gradient(to top, var(--steam), transparent);
+    border-radius: 3px;
+    animation: rise 1.5s ease-in-out infinite;
+  }
+  .hero__steam span:nth-child(2) { animation-delay: 0.25s; }
+  .hero__steam span:nth-child(3) { animation-delay: 0.5s; }
+  @keyframes rise {
+    0%, 100% { opacity: 0.4; transform: translateY(0); }
+    50% { opacity: 0.9; transform: translateY(-6px); }
+  }
+  .hero__icon { margin-bottom: 0.75rem; }
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 9vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.98;
+    margin: 0.5rem 0 0;
+    letter-spacing: -0.01em;
+  }
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--terracotta);
+    margin: 0.6rem 0 1rem;
+  }
+  .hero__sub { max-width: 30rem; margin: 0 auto 1.75rem; opacity: 0.85; }
+  .hero__actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+  .deploy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 1.25rem;
+    padding: 0.55rem 0.85rem;
+    background: #fff;
+    border: 1px solid var(--steam);
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    line-height: 1.25;
+    text-align: left;
+  }
+  .deploy-badge strong { display: block; }
+  .deploy-badge__sub { color: var(--oliva); }
+  .deploy-badge__dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--oliva);
+    box-shadow: 0 0 0 0 rgba(92, 107, 79, 0.5);
+    animation: pulse 2s ease-out infinite;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 1.75rem;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: transform 0.1s, opacity 0.15s, background 0.15s;
+  }
+  .btn--primary { background: var(--terracotta); color: #fff; }
+  .btn--primary:hover { opacity: 0.92; transform: translateY(-2px); }
+  .btn--ghost { color: var(--espresso); border: 2px solid var(--espresso); }
+  .btn--ghost:hover { background: var(--espresso); color: var(--crema); transform: translateY(-2px); }
+
+  /* ── La carta (lavagna) ─────────────────────────── */
+  .carta {
+    background: var(--espresso);
+    color: var(--crema);
+    border-radius: var(--radius);
+    padding: 1.75rem 1.75rem 2rem;
+    margin-bottom: 3rem;
+    box-shadow: var(--shadow);
+  }
+  .carta__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.25rem; }
+  .carta__title { font-family: var(--font-display); font-size: 1.7rem; margin: 0; }
+  .carta__note {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--oro);
+  }
+  .carta__list { list-style: none; margin: 0; padding: 0; }
+  .carta__row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    column-gap: 0.6rem;
+    padding: 0.85rem 0;
+    border-top: 1px solid rgba(245, 230, 211, 0.14);
+  }
+  .carta__row:first-child { border-top: none; }
+  .carta__nome { font-weight: 600; font-size: 1.05rem; }
+  .carta__lead {
+    border-bottom: 2px dotted rgba(245, 230, 211, 0.4);
+    transform: translateY(-0.3rem);
+  }
+  .carta__price {
+    font-family: var(--font-mono);
+    color: var(--oro);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  .carta__desc {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin-top: 0.2rem;
+  }
+
+  /* ── Sezioni ────────────────────────────────────── */
+  .sec-head { margin-bottom: 1.5rem; }
+  .sec-head .eyebrow { margin-bottom: 0.35rem; }
+  .sec-title { font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.1rem); margin: 0; }
+
+  /* ── Taccuino (blog) ────────────────────────────── */
+  .taccuino { margin-bottom: 3rem; }
+  .post {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    border: 1px solid var(--steam);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+  }
+  .post:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--terracotta); }
+  .post__meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--terracotta);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+  .post__time { font-family: var(--font-mono); font-size: 0.72rem; color: var(--oliva); }
+  .post__title { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.1; margin: 0 0 0.6rem; }
+  .post__title--sm { font-size: 1.25rem; }
+  .post__dek { margin: 0 0 1rem; opacity: 0.8; font-size: 0.95rem; }
+  .post__more { font-weight: 600; color: var(--terracotta); font-size: 0.9rem; }
+
+  .post--feature { margin-bottom: 1.25rem; border-left: 4px solid var(--terracotta); }
+  .post-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+
+  /* ── Arch ───────────────────────────────────────── */
+  .arch { margin-bottom: 1rem; }
+  .arch__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+  .arch__cell {
+    background: var(--crema-scura);
+    border: 1px solid var(--steam);
+    padding: 1.1rem 0.75rem;
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .arch__cell span { display: block; font-weight: 600; }
+  .arch__cell small { font-family: var(--font-mono); font-size: 0.72rem; color: var(--oliva); }
+
+  /* ── Footer ─────────────────────────────────────── */
+  .footer {
+    margin-top: 3rem;
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--steam);
+    opacity: 0.75;
+  }
+  .footer__sub { font-size: 0.85rem; margin-top: 0.25rem; }
+
+  @media (max-width: 600px) {
+    .post-grid { grid-template-columns: 1fr; }
+    .arch__grid { grid-template-columns: repeat(2, 1fr); }
+    .post__title { font-size: 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__steam span, .insegna__stato i, .deploy-badge__dot { animation: none; }
+  }
+</style>

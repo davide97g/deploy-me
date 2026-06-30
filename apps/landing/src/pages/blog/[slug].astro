@@ -1,0 +1,113 @@
+---
+import Base from "../../layouts/Base.astro";
+import { articoli } from "../../data/articoli.ts";
+
+export function getStaticPaths() {
+  return articoli.map((a) => ({ params: { slug: a.slug }, props: { articolo: a } }));
+}
+
+const { articolo } = Astro.props;
+const webUrl = import.meta.env.PUBLIC_WEB_URL ?? "http://localhost:5173";
+
+const fmtData = (iso: string) =>
+  new Intl.DateTimeFormat("it-IT", { day: "numeric", month: "long", year: "numeric" }).format(
+    new Date(iso),
+  );
+---
+
+<Base title={`${articolo.titolo} — Caffè del Deploy`} description={articolo.dek}>
+  <article class="articolo">
+    <a href="/#taccuino" class="back">← Torna al taccuino</a>
+
+    <header class="art-head">
+      <div class="art-meta">
+        <span class="tag">{articolo.categoria}</span>
+        <span class="art-time">{fmtData(articolo.data)} · {articolo.lettura} min di lettura</span>
+      </div>
+      <h1 class="art-title">{articolo.titolo}</h1>
+      <p class="art-dek">{articolo.dek}</p>
+    </header>
+
+    <div class="prose">
+      {articolo.corpo.map((p) => <p>{p}</p>)}
+    </div>
+
+    <aside class="art-cta">
+      <p>Note caotiche da macinare?</p>
+      <a href={webUrl} class="btn btn--primary">Ordina al bancone</a>
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .articolo { max-width: 660px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  .back {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--oliva);
+    text-decoration: none;
+  }
+  .back:hover { color: var(--terracotta); }
+
+  .art-head { margin: 1.75rem 0 2rem; }
+  .art-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--terracotta);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+  .art-time { font-family: var(--font-mono); font-size: 0.74rem; color: var(--oliva); }
+  .art-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.05;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.01em;
+  }
+  .art-dek {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--terracotta);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .prose { font-size: 1.08rem; line-height: 1.75; }
+  .prose :global(p) { margin: 0 0 1.3rem; }
+  /* Capolettera sul primo paragrafo */
+  .prose :global(p:first-of-type::first-letter) {
+    font-family: var(--font-display);
+    font-size: 3.4rem;
+    line-height: 0.7;
+    float: left;
+    padding: 0.35rem 0.55rem 0 0;
+    color: var(--terracotta);
+  }
+
+  .art-cta {
+    margin-top: 2.5rem;
+    padding: 1.75rem;
+    background: var(--crema-scura);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .art-cta p { margin: 0 0 1rem; font-family: var(--font-display); font-size: 1.2rem; }
+
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 1.6rem;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: transform 0.1s, opacity 0.15s;
+  }
+  .btn--primary { background: var(--terracotta); color: #fff; }
+  .btn--primary:hover { opacity: 0.92; transform: translateY(-2px); }
+</style>

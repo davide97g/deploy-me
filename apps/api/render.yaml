@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: caffe-del-deploy-api
+    runtime: node
+    rootDir: apps/api
+    buildCommand: cd ../.. && pnpm install && pnpm --filter @caffe-del-deploy/api build
+    startCommand: node dist/index.js
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: WEB_ORIGIN
+        sync: false
+      - key: ENGINE_URL
+        sync: false

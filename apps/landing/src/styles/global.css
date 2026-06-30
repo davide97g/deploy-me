@@ -1,0 +1,16 @@
+@import "@caffe-del-deploy/theme/fonts.css";
+@import "@caffe-del-deploy/theme/tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--crema);
+  color: var(--espresso);
+  line-height: 1.6;
+}
