@@ -70,8 +70,8 @@ def kimi_macina(note: str) -> str:
 def root() -> dict[str, str]:
     return {
         "app": "Macinino",
-        "host": "Fly.io",
-        "service": "FastAPI · container",
+        "host": "Vercel",
+        "service": "FastAPI · serverless",
         "runtime": "Python",
     }
 

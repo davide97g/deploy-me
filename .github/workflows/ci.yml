@@ -42,4 +42,4 @@ jobs:
         run: |
           python -m venv .venv
           .venv/bin/pip install -r requirements.txt
-          .venv/bin/python -c "from main import app; assert 'Macinino' in app.title"
+          .venv/bin/python -c "from api.index import app; assert 'Macinino' in app.title"

@@ -19,9 +19,9 @@ export const articoli: Articolo[] = [
     lettura: 6,
     corpo: [
       "C'è un momento, in ogni progetto, in cui qualcuno chiede: «ma alla fine dove lo deployiamo?». E parte la guerra di religione. Vercel contro Netlify, container contro funzioni serverless, chi ha ragione e chi paga la bolletta.",
-      "La verità è che ogni pezzo del bar ha esigenze diverse. La vetrina è statica e vuole una CDN veloce: Netlify. Il bancone è una single page app React: Vercel la serve senza pensarci. La cucina è un'API Node che deve stare sempre accesa: Render. Il macinino è Python con un modello dietro, e gli serve un container vero: Fly.io.",
+      "La verità è che ogni pezzo del bar ha esigenze diverse. La vetrina è statica e vuole una CDN veloce: Netlify. Il bancone è una single page app React: Vercel la serve senza pensarci. La cucina è un'API Node che deve stare sempre accesa: Render. Il macinino è Python con un modello dietro, e gira benissimo come funzione serverless: anche lui su Vercel.",
       "Invece di forzare tutto su una piattaforma sola, abbiamo lasciato che ogni app scegliesse la sua. Il monorepo tiene insieme il codice; i deploy restano indipendenti. Cambi il bancone e va in produzione solo il bancone.",
-      "Il prezzo da pagare è qualche file di configurazione in più — un netlify.toml qui, un fly.toml là. Ma in cambio nessun deploy blocca un altro, e ogni servizio scala come gli pare. Un caffè alla volta.",
+      "Il prezzo da pagare è qualche file di configurazione in più — un netlify.toml qui, un vercel.json là. Ma in cambio nessun deploy blocca un altro, e ogni servizio scala come gli pare. Un caffè alla volta.",
     ],
   },
   {

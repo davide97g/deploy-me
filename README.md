@@ -6,7 +6,7 @@ Monorepo demo for multi-platform deploy tutorials. Four connected apps themed as
 
 ```
 Vetrina (Astro)  →  Bancone (React)  →  Cucina (Hono)  →  Macinino (FastAPI/Kimi)
-   Netlify              Vercel              Render              Fly.io
+   Netlify              Vercel              Render              Vercel
 ```
 
 ## Apps
@@ -16,7 +16,7 @@ Vetrina (Astro)  →  Bancone (React)  →  Cucina (Hono)  →  Macinino (FastAP
 | Vetrina | `apps/landing` | Astro | Netlify |
 | Bancone | `apps/web` | React + Vite | Vercel |
 | Cucina | `apps/api` | Hono | Render (alt: Railway) |
-| Macinino | `apps/engine` | FastAPI + Kimi | Fly.io |
+| Macinino | `apps/engine` | FastAPI + Kimi | Vercel (Python serverless) |
 
 ## Local development
 
@@ -94,16 +94,14 @@ pnpm build
 
 ## Deploy checklist (YouTube script)
 
-### 1. Macinino — Fly.io
+### 1. Macinino — Vercel (Python serverless)
 
-```bash
-cd apps/engine
-fly launch --no-deploy  # or fly apps create caffe-del-deploy-engine
-fly secrets set MOONSHOT_API_KEY=sk-...
-fly deploy
-```
+1. Import the repo on Vercel as a **new project**, set **Root Directory** to `apps/engine`
+2. Framework Preset: **Other** — Vercel auto-installs `requirements.txt`, no build command needed
+3. Set `MOONSHOT_API_KEY` in Project Settings → Environment Variables (omit → mock mode)
+4. Deploy
 
-Note the URL: `https://caffe-del-deploy-engine.fly.dev`
+The FastAPI app lives in `apps/engine/api/index.py`; `vercel.json` rewrites every path to it, so `/health` and `/macina` answer at the deployment root. Note the URL, e.g. `https://caffe-del-deploy-engine.vercel.app`.
 
 ### 2. Cucina — Render
 
@@ -135,7 +133,7 @@ Note the URL: `https://caffe-del-deploy-engine.fly.dev`
 
 ### 6. Auto-deploy
 
-Push to `main`. Netlify, Vercel, and Render redeploy via Git hooks. Fly.io can use the included GitHub Action (set `FLY_API_TOKEN` secret).
+Push to `main`. Netlify, Vercel (Bancone **and** Macinino, two separate projects), and Render all redeploy via their Git integrations. No GitHub Action needed.
 
 ## API
 

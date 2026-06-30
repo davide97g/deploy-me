@@ -25,7 +25,7 @@ Vetrina (Astro :4321) ──link──▶ Bancone (React/Vite :5173)
 | Vetrina | `apps/landing` | Astro | 4321 | Netlify | `netlify.toml` |
 | Bancone | `apps/web` | React 19 + Vite | 5173 | Vercel | `vercel.json` |
 | Cucina | `apps/api` | Hono | 3000 | Render (alt: Railway) | `render.yaml`, `railway.toml` |
-| Macinino | `apps/engine` | FastAPI + OpenAI SDK | 8000 | Fly.io | `fly.toml`, `Dockerfile` |
+| Macinino | `apps/engine` | FastAPI + OpenAI SDK | 8000 | Vercel (Python serverless) | `api/index.py`, `vercel.json` |
 | Cassa (Stats) | `apps/stats` | React 19 + Vite | 5174 | TBD (Supabase direct) | — |
 
 **Naming shift across the boundary:** web↔api speak `OrdinaRequest`/`OrdinaResponse` (`note` → `risultato`); api↔engine speak `MacinaRequest`/`MacinaResponse`. The api (`apps/api/src/index.ts`) translates `/ordina` into a call to the engine's `/macina`. Keep this in mind when changing payloads — types live in `packages/shared/src/index.ts` for the Node side only; the engine defines its own Pydantic models.
@@ -54,7 +54,7 @@ If `dev:all` fails with a port-in-use error, run `pnpm dev:stop` and retry (`scr
 
 Run one app directly with a filter, e.g. `pnpm --filter @caffe-del-deploy/api dev`.
 
-Engine-only Python work: `cd apps/engine && .venv/bin/uvicorn main:app --reload --port 8000`.
+Engine-only Python work: `cd apps/engine && .venv/bin/uvicorn api.index:app --reload --port 8000`. The FastAPI app lives in `apps/engine/api/index.py` (Vercel's Python entrypoint convention); `vercel.json` rewrites every path to it.
 
 ## Env vars
 
@@ -62,5 +62,5 @@ Per-app `.env` files already exist for local dev. Root `.env.example` documents 
 
 ## Deploy
 
-- **Engine** auto-deploys to Fly.io via `.github/workflows/deploy-engine.yml` on push to `apps/engine/**` (needs `FLY_API_TOKEN` secret).
-- The other three deploy via their host's git integration using the config files in each app folder. Render/Railway build the api from the monorepo root (`cd ../.. && pnpm install && pnpm --filter ... build`). Full step-by-step is in `README.md`.
+- **Engine** deploys to **Vercel** as a separate project with **Root Directory = `apps/engine`** (Python serverless; Vercel auto-installs `requirements.txt`, no build command). Set `MOONSHOT_API_KEY` in the project's env vars (omit → mock mode). No GitHub Action — it redeploys via Vercel's git integration like the others.
+- All four deploy via their host's git integration using the config files in each app folder. Render/Railway build the api from the monorepo root (`cd ../.. && pnpm install && pnpm --filter ... build`). Full step-by-step is in `README.md`.

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
-    "dev:engine": "cd apps/engine && (test -d .venv || python3 -m venv .venv) && .venv/bin/pip install -q -r requirements.txt && .venv/bin/uvicorn main:app --reload --port 8000",
+    "dev:engine": "cd apps/engine && (test -d .venv || python3 -m venv .venv) && .venv/bin/pip install -q -r requirements.txt && .venv/bin/uvicorn api.index:app --reload --port 8000",
     "dev:stop": "bash scripts/kill-ports.sh",
     "predev:all": "bash scripts/kill-ports.sh",
     "dev:all": "concurrently -k -n landing,web,stats,api,engine -c blue,green,cyan,yellow,magenta \"pnpm --filter @caffe-del-deploy/landing dev\" \"pnpm --filter @caffe-del-deploy/web dev\" \"pnpm --filter @caffe-del-deploy/stats dev\" \"pnpm --filter @caffe-del-deploy/api dev\" \"pnpm dev:engine\"",
