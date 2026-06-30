@@ -10,10 +10,18 @@ import { vendite, canaleEnum } from "./db/schema.js";
 
 const app = new Hono();
 
+const webOrigin = process.env.WEB_ORIGIN ?? "http://localhost:5173";
 const engineUrl = process.env.ENGINE_URL ?? "http://localhost:8000";
 const port = Number(process.env.PORT ?? 3000);
 
-app.use("*", cors({ origin: "*" }));
+app.use(
+  "*",
+  cors({
+    origin: webOrigin,
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: ["Content-Type"],
+  }),
+);
 
 async function probeMacinino(): Promise<"online" | "offline"> {
   try {
