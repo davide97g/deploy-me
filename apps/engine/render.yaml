@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: caffe-del-deploy-engine
+    runtime: python
+    rootDir: apps/engine
+    buildCommand: pip install -r requirements.txt
+    # FastAPI is ASGI — uvicorn, not gunicorn/wsgi
+    startCommand: uvicorn api.index:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # omit in dashboard → engine runs in [MOCK] mode
+      - key: MOONSHOT_API_KEY
+        sync: false
