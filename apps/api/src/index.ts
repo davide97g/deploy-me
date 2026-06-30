@@ -34,7 +34,7 @@ async function probeMacinino(): Promise<"online" | "offline"> {
 
 app.get("/", (c) =>
   c.json({
-    app: "Cucina",
+    app: "Cucina v2",
     host: "Render",
     service: "Hono · web service",
     runtime: "Node",

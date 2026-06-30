@@ -49,7 +49,7 @@ export default function App() {
         <img src="/coffee-cup.svg" alt="" className="cassa__logo" width={40} height={40} />
         <div>
           <h1 className="cassa__title">Caffè del Deploy</h1>
-          <p className="cassa__subtitle">Cassa · Statistiche</p>
+          <p className="cassa__subtitle">Cassa · Statistiche v2</p>
         </div>
         <div className="cassa__conn" title="Il browser interroga Supabase via PostgREST, senza backend">
           <span className="cassa__dot" />

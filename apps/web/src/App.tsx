@@ -14,7 +14,7 @@ export default function App() {
         <img src="/coffee-cup.svg" alt="" className="bancone__logo" width={40} height={40} />
         <div>
           <h1 className="bancone__title">Caffè del Deploy</h1>
-          <p className="bancone__subtitle">Bancone</p>
+          <p className="bancone__subtitle">Bancone v2</p>
         </div>
         <div className="bancone__conn" title="Frontend statico servito dalla CDN edge di Vercel">
           <span className="bancone__dot" />

@@ -69,7 +69,7 @@ def kimi_macina(note: str) -> str:
 @app.get("/")
 def root() -> dict[str, str]:
     return {
-        "app": "Macinino",
+        "app": "Macinino v2",
         "host": "Vercel",
         "service": "FastAPI · serverless",
         "runtime": "Python",
